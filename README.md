@@ -45,7 +45,7 @@ The figure can be extracted using the dofile in the example folder.
 
 Across the whole country, the quality looks like this. 
 
-<img src="./_figures/e1_fig_map.png" height="300">
+<img src="./_figures/e1_fig_map.png" height="400">
 
 Of course, any other HRR-level characteristic can be disaggregated in the same manner. 
 
