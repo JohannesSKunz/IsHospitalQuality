@@ -36,7 +36,7 @@ We refer to this as an “equally-weighted” quality exposure. The crosswalk fi
 
 We show the application of the weighting for North Carolina. NC has access to nine HRRs (Asheville, Charlotte, Durham, Greensboro, Greenville, Hickory, Raleigh, Wilmington, and Winston-Salem); thus each county might have ties to several hospital referral regions. In the left Figure, we show the raw weighting, and in the right conditional on county-level characteristics (residualized). 
 
-<img src="./_figures/exampleNC.png" height="300">
+<img src="./_example/exampleNC.png" height="300">
 
 The figure can be extracted using the dofile in the example folder. 
 
@@ -45,28 +45,28 @@ The figure can be extracted using the dofile in the example folder.
 
 Across the whole country, the quality looks like this. 
 
-<img src="./_figures/e1_fig_map.png" height="400">
+<img src="./_example/e1_fig_map.png" height="400">
 
 Of course, any other HRR-level characteristic can be disaggregated in the same manner. 
 
 #### Some STATA example 
 
-Here is the Stata script:
+Here is the Stata script (see also example folder):
 
 ```stata
 * change path 
-cd "/Users/jkun0001/Desktop/_data/Hospitalcompare/_raw/"
+cd "˜/Hospitalcompare/_raw/"
 
-* 1. Load any type of HRR data, ie. Dartmouth (our exampe individual hospital quality aggregated to the HRR-level)
-* Here just count number of beds in HRR from AHA (see _sourcefiles for source of data)
+* 1. Load any type of HRR data, ie. Dartmouth (our example individual hospital quality aggregated to the HRR-level)
+* Here just count the number of beds in HRR from AHA (see _sourcefiles for source of data)
 use Dartmouth_HOSPITALRESEARCHDATA/hosp16_atlas.dta
 collapse (sum) AHAbeds , by(hrr)
 
 * 2. Adjust format and merge with crosswalk 
 tostring hrr, gen(hrrnum)
-merge 1:m hrrnum using /Users/jkun0001/Documents/GitHub/IsHospitalQuality/crosswalk/crosswalk_county_hrr.dta, nogen
+merge 1:m hrrnum using ˜/crosswalk/crosswalk_county_hrr.dta, nogen
 
-* 3. Collapse on county-level for further analysis, using our prefered weights, others are provided
+* 3. Collapse on county-level for further analysis, using our preferred weights, others are provided
 collapse (mean) AHAbeds [aw=zip_count_weight_in_HRR] , by(countyfips)
 ```
 
