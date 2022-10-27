@@ -11,7 +11,7 @@ This repository contains replication files and data for [Kunz and Propper (2022)
 
 The analysis is based on several external datasets that we do not re-post here since held by different entities. Here we describe how to access them and provide our codes. We are encouraging any replication attempt and interested readers shall not hesitate to contact [Johannes Kunz](mailto:johannes.kunz@monash.edu) about any of these. For brevity, we exclude the multitude of replication files for the Appendix version but are happy to provide these upon request. 
 
-We first explain the crosswalk and then present an example of how the crosswalk of HRR variates (hospital quality) and County-level outcomes (deaths from Covid-19) can be applied, in one state. 
+We first explain the crosswalk and then present an example of how the crosswalk of HRR variates (hospital quality) and County-level outcomes (deaths from Covid-19) can be applied. 
 
 
 ## Crosswalk
@@ -21,29 +21,28 @@ In the paper, we explicitly describe the crosswalk to relate HRR-level variates 
 We assign to each county a weighted average of the quality exposure, which is equal to the fraction of zip codes that belong to the referral network. Weights are the number of zip codes in a county that merge into an HRR, divided by the total number of zip codes in the county, i.e.
 $\frac{zip_{i_{HRR}}}{\sum_{i}zip_i}.$
 
-For example, Autauga County comprises 13 zip codes, 4 of which belong to HRR Birmingham and 9 to HRR Montgomery, with hospital quality averages of 0.34 and 0.28, respectively (where lower numbers reflect poorer quality). In this example, the assigned weighted quality exposure is 0.30. This places Autauga County in the 62.94th percentile of the county quality distribution, which has a mean of 0.38 and a standard deviation of 0.12. 
+We average across hospitals within a given HRR to derive quality at the HRR level and use these weights to calculate exposure at the county level. For example, Autauga County comprises 13 zip codes, 4 of which belong to HRR Birmingham and 9 to HRR Montgomery, with hospital quality averages of 0.34 and 0.28, respectively (where lower numbers reflect poorer quality). In this example, the assigned weighted quality exposure is 0.30. This places Autauga County in the 62.94th percentile of the county quality distribution, which has a mean of 0.38 and a standard deviation of 0.12. 
 
-We refer to this approach as “zip-weighted”. We average across hospitals within a given HRR to derive quality at the HRR level and use Eq. (1) to calculate exposure at the county level.4 We use three other weighting methods as robustness checks. First, we calculate quality exposure as the average of all HRRs a county has referral ties to without weighing by how many zip codes in a county belong to an HRR. In this case, Autauga would have a quality of .
+We refer to this approach as “zip-weighted”. 
 
-We refer to this as an “equally-weighted” quality exposure. The crosswalk file also contains an approach zip-code population-weighted weights. 
+The crosswalk contains other weighting methods, in our case, as robustness checks. First, we calculate quality exposure as the average of all HRRs a county has referral ties to without weighing by how many zip codes in a county belong to an HRR. We refer to this as an “equally-weighted” quality exposure. Second, the crosswalk file also contains an approach zip-code population-weighted weights (using census population estimates). 
 
-[Dartmouth-DAC](https://github.com/Dartmouth-DAC/covid-19-hrr-mapping), provides a complementary crosswalk that is similar in many respects but results in more missings. In our application, either crosswalk produces similar results, which is however not guaranteed. 
+Finally, [Dartmouth-DAC](https://github.com/Dartmouth-DAC/covid-19-hrr-mapping), provides a complementary crosswalk that is similar in many respects but results in more missing values. In our application, either crosswalk produces similar results, which is however not guaranteed. 
 
 
 ## Example
 
-#### County wide supply differences 
+#### County-wide supply differences 
 
-We show the application of the weighting for North Carolina. NC has access to nine HRRs (Asheville, Charlotte, Durham, Greensboro, Greenville, Hickory, Raleigh, Wilmington, and Winston-Salem); thus each county might have ties to several hospital referral regions. In the left Figure, we show the raw weighting, and in the right conditional on county-level characteristics (residualized). 
+The figure shows the application of the weighting for North Carolina. 
+
+NC has access to nine HRRs (Asheville, Charlotte, Durham, Greensboro, Greenville, Hickory, Raleigh, Wilmington, and Winston-Salem); thus each county might have ties to several hospital referral regions. In the left Figure, we show the raw weighting, and in the right conditional on county-level characteristics (residualized). 
 
 <img src="./_example/exampleNC.png" height="300">
 
-The figure can be extracted using the dofile in the example folder. 
-
-
 #### Country wide quality differences 
 
-Across the whole country, the quality looks like this. 
+Across the whole country, the quality looks like this: 
 
 <img src="./_example/e1_fig_map.png" height="400">
 
@@ -57,8 +56,8 @@ Here is the Stata script (see also example folder):
 * change path 
 cd "˜/Hospitalcompare/_raw/"
 
-* 1. Load any type of HRR data, ie. Dartmouth (our example individual hospital quality aggregated to the HRR-level)
-* Here just count the number of beds in HRR from AHA (see _sourcefiles for source of data)
+* 1. Load any type of HRR data, ie. Dartmouth provides a host of measures (in our application we use individual hospital quality aggregated to the HRR-level)
+* Here for a simple example we just count the number of beds in HRR from AHA (see _sourcefiles for the source of data)
 use Dartmouth_HOSPITALRESEARCHDATA/hosp16_atlas.dta
 collapse (sum) AHAbeds , by(hrr)
 
@@ -71,6 +70,8 @@ collapse (mean) AHAbeds [aw=zip_count_weight_in_HRR] , by(countyfips)
 ```
 
 ## Replication do-files 
+
+Here we collect all dofiles used in our analysis. We do not repost the dataset as these were too large for the Github repository, please contact us if you have issues replication it. 
 
 ## Source files  
 
