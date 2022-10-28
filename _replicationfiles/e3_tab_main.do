@@ -2,19 +2,14 @@
 clear all 
 set more off 
 tempfile temp temp1 temp2 
-cd "/Users/jkun0001/Desktop/_data/Hospitalcompare/hopsital_quanity_covid/data_final/mainfiles/"
+cd "/Users/jkun0001/Desktop/_replicationfiles/"
 set matsize 10000
 
 * -----------------------------------------------------------------------------
-* path
-loc estdate   "22_06_10"
-loc datedata  "21_11_20"
-loc path "/Users/jkun0001/Dropbox/publications/2022_KunzPropper/_estimation/`estdate'_estimation_fin/"
-use `datedata'_maindata_adj
+* Main
+use maindata_fig2_3_tab1.dta, clear 
 
-loc coviddatenr "531" //
-
-loc indwgt		 "zipwgt" 
+loc indwgt		 "zipwgt"
 loc indicator 	 "`indwgt'_phi_brglmpenalty3" 
 loc outcome 	 "deaths" 
 loc ses 		 "robust" 
@@ -24,23 +19,15 @@ loc covarsHeal 	 "prematuredeathrawvalue poororfairhealthrawvalue poorphysicalhe
 loc covarsQual 	 "longcommutedrivingalonerawvalue airpollutionparticulatematterraw fluvaccinationsrawvalue preventablehospitalstaysrawvalue adultsmokingrawvalue drinkingwaterviolationsrawvalue drivingalonetoworkrawvalue"
 loc covarsCom 	 "CountyLevelIndex CommunityHealth InstitutionalHealth voteshare_rep2020" //
 loc covarsPoP 	 "pop_acs_share_hisp pop_acs_share_nh_black pop_acs_share_nh_other urban popdensity2010 age65andolderpct2010 foreignbornpct ed1lessthanhspct ed2hsdiplomaonlypct ed3somecollegepct ed4assocdegreepct avghhsize hh65plusalonepct"
-loc covars      "`covarsECON' `covarsCom' `covarsPoP' `covarsHeal' `covarsQual' residentialsegregationblackwhite "
-
-* -----------------------------------------------------------------------------
-* Missings 0 indicators 
-foreach var of local covars {
-	qui g miss`la'_m = `var' ==. 
-	qui replace `var' = 0 if `var' ==. 
-	loc la = `la'+1 
-	}
-loc covars " `covars'  *_m"
-loc covariates " `covarsHRR' `covars'  i.statefips"
+loc covars       "`covarsECON' `covarsCom' `covarsPoP' `covarsHeal' `covarsQual' residentialsegregationblackwhite "
+loc covars       " `covars'  *_m"
+loc covariates   " `covarsHRR' `covars'  i.statefips"
 
 * -----------------------------------------------------------------------------
 * Pooled 
 loc i = 1 
 loc j = 1
-
+loc coviddatenr "531" //
 keep if day == `coviddatenr'
 
 
@@ -211,20 +198,20 @@ est sto reg`i'
 	
 * Gen tables
 		
-esttab er1* using `path'/_tables/e3_tab_main.tex, replace  ///
+esttab er1* using e3_tab_main.tex, replace  ///
 	keep(*quality* ) ///
 	rename(`keepv')  ///
 	stat(r2 )  b(3) se nostar		
-esttab reg* using `path'/_tables/e3_tab_main.tex, append order(quality cases vaccall_day  population `indwgt'_hhi_beds `indwgt'_nrhosphrr `indwgt'_Disc_ACSC ) ///
+esttab reg* using e3_tab_main.tex, append order(quality cases vaccall_day  population `indwgt'_hhi_beds `indwgt'_nrhosphrr `indwgt'_Disc_ACSC ) ///
 	keep(*quality* ) ///
 	rename(`keepv')  ///
 	mtitle("Base" "Zip Pop" "Skinner" "Equal" "Pooled Q" "ExcessRR" "Mortrate PN" "All readrate") ///
 	stat(N me sd mf stad r2 , fmt(%9.0fc %9.2fc %9.2fc %9.2fc %9.3fc))  b(3) se  nostar 
-esttab er2* using `path'/_tables/e3_tab_main.tex, append  ///
+esttab er2* using e3_tab_main.tex, append  ///
 	keep(*quality* ) ///
 	rename(`keepv')  ///
 	stat(r2 )  b(3) se nostar
-esttab er3* using `path'/_tables/e3_tab_main.tex, append  ///
+esttab er3* using e3_tab_main.tex, append  ///
 	keep(*quality* ) ///
 	rename(`keepv')  ///
 	stat(r2 )  b(3) se nostar	

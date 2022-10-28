@@ -33,7 +33,7 @@ save ../processedfiles/statedaylevel_covidpolicy, replace
 import delimited `coviddate'_COVID-19_Vaccinations_in_the_United_States_County.csv, clear
 g statadate = date(date,"MDY")
 format statadate %td
-* need to drop unknown county, could allocate by population?
+* need to drop unknown county
 drop if fips=="UNK"
 sort recip_county statadate 
 gen countyfips  = string(real(fips),"%05.0f")
@@ -74,7 +74,8 @@ forval i=5/`coviddatenr' {
 	}
 merge 1:1 countyfips using `temp1' , nogen
 merge 1:1 countyfips using `temp3' , nogen
-* Just one unknown (Kusilvak see above) and puerto rico ... bro if _merge!=3 
+* Just one unknown (Kusilvak see above) and puerto rico ... 
+* bro if _merge!=3 
  
 * ------------------------------------------------------------------------------
 * Merge to other data

@@ -25,8 +25,8 @@ use `datedata'_maindata.dta
 * --------------------------------------------
 * Quality 
 * Reverse quality: do all
-loc indwgt		 "zipwgt" // "afact" // "zipwgt" // "equwgt" //
-loc indicator 	 "`indwgt'_phi_brglmpenalty3" // "`indwgt'_phi_brglmpenalty_pool" // "`indwgt'_exreadmisratio3" // "`indwgt'_mort_rate3" // "`indwgt'_all_readm_rate" // "`indwgt'_phi_brglmpenalty3" // "`indwgt'_exreadmisratio3" //   "zipwgt_phi_brglmpenalty3" // "zipwgt_phi_brglmpenalty3" // "zippopwgt_phi_brglmpenalty_pool" // "equwgt_phi_brglmpenalty1" // zipwgt_phi_brglmpenalty1
+loc indwgt		 "zipwgt" 
+loc indicator 	 "`indwgt'_phi_brglmpenalty3" 
 
 replace `indicator' = 1- `indicator'
 su `indicator'
@@ -47,11 +47,11 @@ forval i = 5/`coviddatenr3' {
 	
 * -----------------------
 * Joint model, stacked 
-loc indwgt		 "zipwgt" // "afact" // "zipwgt" // "equwgt" //
-loc indicator 	 "`indwgt'_phi_brglmpenalty3" // "`indwgt'_phi_brglmpenalty_pool" // "`indwgt'_exreadmisratio3" // "`indwgt'_mort_rate3" // "`indwgt'_all_readm_rate" // "`indwgt'_phi_brglmpenalty3" // "`indwgt'_exreadmisratio3" //   "zipwgt_phi_brglmpenalty3" // "zipwgt_phi_brglmpenalty3" // "zippopwgt_phi_brglmpenalty_pool" // "equwgt_phi_brglmpenalty1" // zipwgt_phi_brglmpenalty1
-loc outcome 	 "deaths" // cases
-loc ses 		 "robust" // "cluster(state)" // "robust"
-loc covarsHRR 	 "`indwgt'_hhi_beds `indwgt'_nrhosphrr " // "zipwgt_hhi_beds zipwgt_nrhosphrr zipwgt_Disc_ACSC"
+loc indwgt		 "zipwgt" 
+loc indicator 	 "`indwgt'_phi_brglmpenalty3" 
+loc outcome 	 "deaths" 
+loc ses 		 "robust" 
+loc covarsHRR 	 "`indwgt'_hhi_beds `indwgt'_nrhosphrr " 
 loc covarsECON	 "PovertyPercentAllAges MedianHouseholdIncome uninsuredrawvalue"
 loc covarsHeal 	 "prematuredeathrawvalue poororfairhealthrawvalue poorphysicalhealthdaysrawvalue poormentalhealthdaysrawvalue physicalinactivityrawvalue lifeexpectancyrawvalue"
 loc covarsQual 	 "airpollutionparticulatematterraw fluvaccinationsrawvalue preventablehospitalstaysrawvalue adultsmokingrawvalue drinkingwaterviolationsrawvalue drivingalonetoworkrawvalue"
@@ -59,7 +59,6 @@ loc covarsCom 	 "CountyLevelIndex CommunityHealth InstitutionalHealth voteshare_
 loc covarsPoP 	 "pop_acs_share_hisp pop_acs_share_nh_black pop_acs_share_nh_other popdensity2010 age65andolderpct2010 foreignbornpct ed1lessthanhspct ed2hsdiplomaonlypct ed3somecollegepct ed4assocdegreepct avghhsize hh65plusalonepct"
 loc covars       "`covarsECON' `covarsCom' `covarsPoP' `covarsHeal' `covarsQual' residentialsegregationblackwhite "
 
-*loc othervarsused "vaccall_day"
 loc othervarsused "longcommutedrivingalonerawvalue zipwgt_ResidentPopulation2010 zipwgt_TotPhysper100000 zipwgt_HospBasedPhysper10 zipwgt_CritCarePhysper100 zipwgt_InfecDisSpecper100 zipwgt_AcCareHospBedsper10 zipwgt_HospbasedRegNurper1 zipwgt_FTEHospEmpper1000        zippopwgt_ResidentPopulation2010 zippopwgt_TotPhysper100000 zippopwgt_HospBasedPhysper10 zippopwgt_CritCarePhysper100 zippopwgt_InfecDisSpecper100 zippopwgt_AcCareHospBedsper10 zippopwgt_HospbasedRegNurper1 zippopwgt_FTEHospEmpper1000 zipwgt_popinhrr zipwgt_teach zipwgt_hospperhead zipwgt_nrhospitalshrr zipwgt_nrbedshrr zippopwgt_nrhosphrr zippopwgt_hhi_beds primarycarephysiciansrawvalue preventablehospitalstaysrawvalue zipwgt_Disc_ACSC urban metrourban voteshare_rep2020 voteshare_rep2016 voteshare_rep2012 repubican_majority2012 repubican_majority2016 repubican_majority2020 zipwgt_phi_brglmpenalty1 prematureageadjustedmortalityraw whitenonhispanicpct2010 zipwgt_all_readm_rate zipwgt_mort_rate3 zipwgt_exreadmisratio3 zipwgt_phi_brglmpenalty_pool equwgt_phi_brglmpenalty3 zippopwgt_phi_brglmpenalty3 afact_phi_brglmpenalty3"
 
 keep population `othervarsused' countyfips deaths_day* cases_day* vacc_day* `indicator' `indwgt'_hhi_beds `indwgt'_nrhosphrr `covarsHRR' `covars' statefips state

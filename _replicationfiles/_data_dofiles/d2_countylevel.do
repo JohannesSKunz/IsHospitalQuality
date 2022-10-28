@@ -186,7 +186,7 @@ destring candidatevotes totalvotes , force replace
 order countyfips county_name year party candidatevotes totalvotes mode
 sort countyfips year party
 
-* In 2020 some report absentee, mail, thus need to collapse (check)
+* In 2020 some report absentee, mail, thus need to collapse 
 bys countyfips year party: egen totalparty = sum(candidatevotes)
 bys countyfips year party: g t = _n
 bys countyfips year : egen total_check = sum(candidatevotes)

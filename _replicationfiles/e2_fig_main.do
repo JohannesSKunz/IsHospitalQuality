@@ -2,18 +2,12 @@
 clear all 
 set more off 
 tempfile temp temp1 temp2 
-cd "/Users/jkun0001/Desktop/_data/Hospitalcompare/hopsital_quanity_covid/data_final/mainfiles/"
+cd "/Users/jkun0001/Desktop/_replicationfiles/"
 set matsize 10000
 
 * -----------------------------------------------------------------------------
-* path
-
-loc estdate   "22_06_10"
-loc datedata  "21_11_20"
-loc path "/Users/jkun0001/Dropbox/publications/2022_KunzPropper/_estimation/`estdate'_estimation_fin/"
-use `datedata'_maindata_adj
-
-loc coviddatenr "531" //
+* Main
+use maindata_fig2_3_tab1.dta, clear 
 
 loc indwgt		 "zipwgt"
 loc indicator 	 "`indwgt'_phi_brglmpenalty3" 
@@ -25,26 +19,11 @@ loc covarsHeal 	 "prematuredeathrawvalue poororfairhealthrawvalue poorphysicalhe
 loc covarsQual 	 "longcommutedrivingalonerawvalue airpollutionparticulatematterraw fluvaccinationsrawvalue preventablehospitalstaysrawvalue adultsmokingrawvalue drinkingwaterviolationsrawvalue drivingalonetoworkrawvalue"
 loc covarsCom 	 "CountyLevelIndex CommunityHealth InstitutionalHealth voteshare_rep2020" //
 loc covarsPoP 	 "pop_acs_share_hisp pop_acs_share_nh_black pop_acs_share_nh_other urban popdensity2010 age65andolderpct2010 foreignbornpct ed1lessthanhspct ed2hsdiplomaonlypct ed3somecollegepct ed4assocdegreepct avghhsize hh65plusalonepct"
-loc covars      "`covarsECON' `covarsCom' `covarsPoP' `covarsHeal' `covarsQual' residentialsegregationblackwhite "
+loc covars       "`covarsECON' `covarsCom' `covarsPoP' `covarsHeal' `covarsQual' residentialsegregationblackwhite "
+loc covars       " `covars'  *_m"
+loc covariates   " `covarsHRR' `covars'  i.statefips"
 
 * -----------------------------------------------------------------------------
-* Missings 0  
-foreach var of local covars {
-	qui g miss`la'_m = `var' ==. 
-	qui replace `var' = 0 if `var' ==. 
-	loc la = `la'+1 
-	}
-loc covars " `covars'  *_m"
-loc covariates " `covarsHRR' `covars'  i.statefips"
-
-* -----------------------------------------------------------------------------
-* Pooled 
-loc i = 1 
-loc j = 1
-
-
-* regressions 
-keep if fourweeks==1
 
 loc i = 1
 loc j = 1
@@ -67,7 +46,7 @@ reghdfe deaths_day i.day c.`indicator'#i.day ///
 	c.residentialsegregationblackwhite#i.day i.statefips#i.day  ///
 		, a(c.cases_day#i.day c.vacc_day#i.day ///
 			c.miss_m#i.day c.miss1_m#i.day c.miss2_m#i.day c.miss3_m#i.day c.miss4_m#i.day c.miss5_m#i.day c.miss6_m#i.day c.miss7_m#i.day c.miss8_m#i.day c.miss9_m#i.day c.miss10_m#i.day c.miss11_m#i.day c.miss12_m#i.day c.miss13_m#i.day c.miss14_m#i.day c.miss15_m#i.day c.miss16_m#i.day c.miss17_m#i.day c.miss18_m#i.day c.miss19_m#i.day c.miss20_m#i.day c.miss21_m#i.day c.miss22_m#i.day c.miss23_m#i.day c.miss24_m#i.day c.miss25_m#i.day c.miss26_m#i.day c.miss27_m#i.day c.miss28_m#i.day c.miss29_m#i.day c.miss30_m#i.day) ///
-		  cluster(countyfips)
+		  cluster(countyfips) 
 
 	
 eststo reg`i'_`j' 
@@ -91,6 +70,6 @@ coefplot reg1_2, keep(*brglmpenalty3*)  ///
 			scheme(s2mono) graphregion(color(white)) bgcolor(white) ///
 			legend(off) 
 			
-	graph export `path'/_figures/e2_fig_main.png , replace 				
-	graph export `path'/_figures/e2_fig_main.tif , replace 				
+	graph export e2_fig_main.png , replace 				
+	graph export e2_fig_main.tif , replace 				
 

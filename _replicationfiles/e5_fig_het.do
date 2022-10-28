@@ -2,19 +2,14 @@
 clear all 
 set more off 
 tempfile temp temp1 temp2 
-cd "/Users/jkun0001/Desktop/_data/Hospitalcompare/hopsital_quanity_covid/data_final/mainfiles/"
+cd "/Users/jkun0001/Desktop/_replicationfiles/"
 set matsize 10000
 
 * -----------------------------------------------------------------------------
-* path
-loc estdate   "22_06_10"
-loc datedata  "21_11_20"
-loc path "/Users/jkun0001/Dropbox/publications/2022_KunzPropper/_estimation/`estdate'_estimation_fin/"
-use `datedata'_maindata_adj
+* Main
+use maindata_fig2_3_tab1.dta, clear 
 
-loc coviddatenr "531" //
-
-loc indwgt		 "zipwgt" 
+loc indwgt		 "zipwgt"
 loc indicator 	 "`indwgt'_phi_brglmpenalty3" 
 loc outcome 	 "deaths" 
 loc ses 		 "robust" 
@@ -24,31 +19,23 @@ loc covarsHeal 	 "prematuredeathrawvalue poororfairhealthrawvalue poorphysicalhe
 loc covarsQual 	 "longcommutedrivingalonerawvalue airpollutionparticulatematterraw fluvaccinationsrawvalue preventablehospitalstaysrawvalue adultsmokingrawvalue drinkingwaterviolationsrawvalue drivingalonetoworkrawvalue"
 loc covarsCom 	 "CountyLevelIndex CommunityHealth InstitutionalHealth voteshare_rep2020" //
 loc covarsPoP 	 "pop_acs_share_hisp pop_acs_share_nh_black pop_acs_share_nh_other urban popdensity2010 age65andolderpct2010 foreignbornpct ed1lessthanhspct ed2hsdiplomaonlypct ed3somecollegepct ed4assocdegreepct avghhsize hh65plusalonepct"
-loc covars      "`covarsECON' `covarsCom' `covarsPoP' `covarsHeal' `covarsQual' residentialsegregationblackwhite "
-
-* -----------------------------------------------------------------------------
-* Missings 0  
-foreach var of local covars {
-	qui g miss`la'_m = `var' ==. 
-	qui replace `var' = 0 if `var' ==. 
-	loc la = `la'+1 
-	}
-loc covars " `covars'  *_m"
-loc covariates " `covarsHRR' `covars'  i.statefips"
+loc covars       "`covarsECON' `covarsCom' `covarsPoP' `covarsHeal' `covarsQual' residentialsegregationblackwhite "
+loc covars       " `covars'  *_m"
+loc covariates   " `covarsHRR' `covars'  i.statefips"
 
 * -----------------------------------------------------------------------------
 * Pooled 
 loc i = 1 
 loc j = 1
-
+loc coviddatenr "531" //
 keep if day == `coviddatenr'
+
 su `indicator'
 sca stad = r(sd) 
 
 * Analysis 
 loc i = 1
 loc title ""
-g minorty = 100 -  whitenonhispanicpct2010
 
 * continuous 
 loc variables1 "primarycarephysiciansrawvalue preventablehospitalstaysrawvalue PovertyPercentAllAges  uninsuredrawvalue  age65andolderpct2010 popdensity2010 longcommutedrivingalonerawvalue residentialsegregationblackwhite minorty CommunityHealth InstitutionalHealth voteshare_rep2020"
@@ -165,26 +152,16 @@ foreach var of local variables2  {
  				c12     = 		`"Rep. vote share 2020 (p-val=`pF12')"' ///
 				c13		= 		`"Metro (p-val=`pF13')"' ///
 				) name(gr1, replace)	
-	esttab reg1_* using `path'/_tables/e5_tab_het.tex, replace  keep(*`indicator') b(3) se stats(N me mf1 mf2 sd r2 pF  , fmt(%9.0f %9.2fc )) mtitle(`title') nostar
 
 	
 * ------------------------------------------------------------	
 * Analysis part two capacity
 loc i = 1
 loc title ""
-g StateMajorFinHealthSupport = sum_invest > 0 
-g TeachHospExposed  = zipwgt_teach == 3 
-
-corr zipwgt_AcCareHospBedsper10 zipwgt_HospbasedRegNurper1 zipwgt_HospBasedPhysper10 metrourban
-
-pca zipwgt_TotPhysper100000 zipwgt_HospBasedPhysper10 zipwgt_CritCarePhysper100 zipwgt_InfecDisSpecper100 zipwgt_AcCareHospBedsper10 zipwgt_FTEHospEmpper1000 zipwgt_HospbasedRegNurper1 TeachHospExposed metrourban urban longcommutedrivingalonerawvalue popdensity2010
-predict princ_1 
 
 * continuous 
-*loc variables1 "zipwgt_TotPhysper100000 zipwgt_HospBasedPhysper10 zipwgt_HospbasedRegNurper1" 
 loc variables1 " zippopwgt_nrhosphrr zipwgt_AcCareHospBedsper10 zipwgt_TotPhysper100000 zipwgt_HospBasedPhysper10 zipwgt_CritCarePhysper100  zipwgt_FTEHospEmpper1000 zipwgt_HospbasedRegNurper1 vacc_day"
 * dummies
-*loc variables2 ""
 loc variables2 "TeachHospExposed StateMajorFinHealthSupport"
 
 loc count: word count `variables1' `variables2'
@@ -297,8 +274,6 @@ foreach var of local variables2  {
 				) name(gr2, replace)	
 		
 grc1leg  gr1 gr2 , ysize(15) xsize(18)  xcommon legendfrom(gr1) scheme(s2mono) graphregion(color(white)) title("Heterogenity by median split" "Dark above median", size(small)) 
-		graph export `path'/_figures/e5_fig_het.png , replace 				
-		graph export `path'/_figures/e5_fig_het.tif , replace 				
-		
-esttab reg1_* using `path'/_tables/e5_tab_het.tex, append  keep(*`indicator') b(3) se stats(N me mf1 mf2 sd r2 pF  , fmt(%9.0f %9.2fc )) mtitle(`title') nostar
+		graph export e5_fig_het.png , replace 				
+		graph export e5_fig_het.tif , replace 				
 
