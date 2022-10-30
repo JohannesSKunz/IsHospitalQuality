@@ -7,9 +7,9 @@
 
 ## Overview 
 
-This repository contains replication files and data for [Kunz and Propper (2022)](https://www.sciencedirect.com/science/article/pii/S0094119022000493) more detail on the construction can be found in the paper. 
+This repository contains replication files and data for [Kunz and Propper (2022)](https://www.sciencedirect.com/science/article/pii/S0094119022000493); more details can be found in the paper. 
 
-The analysis is based on several external datasets that we do not re-post here since held by different entities. Here we describe how to access them and provide our codes. We are encouraging any replication attempt and interested readers shall not hesitate to contact [Johannes Kunz](mailto:johannes.kunz@monash.edu) about any of these. For brevity, we exclude the multitude of replication files for the Appendix version but are happy to provide these upon request. 
+The analysis is based on several external datasets that we do not re-post here since they are held by different entities. Here we describe how to access them and provide our codes. We are encouraging any replication attempt and interested readers shall not hesitate to contact [Johannes Kunz](mailto:johannes.kunz@monash.edu) about any of these. For brevity, we exclude the multitude of replication files for the Appendix version but are happy to provide these upon request. 
 
 We first explain the crosswalk and then present an example of how the crosswalk of HRR variates (hospital quality) and County-level outcomes (deaths from Covid-19) can be applied. 
 
@@ -36,7 +36,7 @@ Finally, [Dartmouth-DAC](https://github.com/Dartmouth-DAC/covid-19-hrr-mapping),
 
 The figure shows the application of the weighting for North Carolina. 
 
-NC has access to nine HRRs (Asheville, Charlotte, Durham, Greensboro, Greenville, Hickory, Raleigh, Wilmington, and Winston-Salem); thus each county might have ties to several hospital referral regions. In the left Figure, we show the raw weighting, and in the right conditional on county-level characteristics (residualized). 
+NC has access to nine HRRs (Asheville, Charlotte, Durham, Greensboro, Greenville, Hickory, Raleigh, Wilmington, and Winston-Salem); thus each county might have ties to several hospital referral regions. In the left Figure, we show the raw weighting, and in the right conditional on county-level characteristics (residualized) from our application. 
 
 <img src="./_example/exampleNC.png" height="300">
 
@@ -71,7 +71,7 @@ collapse (mean) AHAbeds [aw=zip_count_weight_in_HRR] , by(countyfips)
 
 ## Replication do-files 
 
-Here we collect all dofiles used in our analysis. We do not repost the dataset as these were too large for the Github repository, please contact us if you have issues replication it. 
+Here we collect all dofiles and data used in our analysis. We do not repost the full dataset as these were too large for the Github repository, please contact us if you have issues replicating it. 
 
 ## Source files  
 
