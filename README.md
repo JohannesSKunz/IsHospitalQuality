@@ -81,7 +81,7 @@ If you are interested in the exact datasets (or if there are updates or they are
 
 The source file folder contains an overview of the files we used. 
 
-The quality metrics are constructed in [Kunz et al (2024)](https://onlinelibrary.wiley.com/doi/10.1002/hec.4861) and associated replication files can be found (here)[].
+The quality metrics are constructed in [Kunz et al (2024)](https://onlinelibrary.wiley.com/doi/10.1002/hec.4861) and associated replication files can be found (here)[https://github.com/JohannesSKunz/AssessingQualityofPublicServices].
 
 
 ## Update History
