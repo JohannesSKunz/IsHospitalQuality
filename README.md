@@ -9,9 +9,9 @@
 
 This repository contains replication files and data for [Kunz and Propper (2022)](https://www.sciencedirect.com/science/article/pii/S0094119022000493); more details can be found in the paper. 
 
-The analysis is based on several external datasets that we do not re-post here since they are held by different entities. Here we describe how to access them and provide our codes. We are encouraging any replication attempt and interested readers shall not hesitate to contact [Johannes Kunz](mailto:johannes.kunz@monash.edu) about any of these. For brevity, we exclude the multitude of replication files for the Appendix version but are happy to provide these upon request. 
+The analysis is based on several external datasets that we do not re-post here since they are held by different entities. Here, we describe how to access them and provide our codes. We are encouraging any replication attempt, and interested readers should not hesitate to contact [Johannes Kunz](mailto:johannes.kunz@monash.edu) about any of these. For brevity, we exclude the multitude of replication files for the Appendix version but are happy to provide these upon request. 
 
-We first explain the crosswalk and then present an example of how the crosswalk of HRR variates (hospital quality) and County-level outcomes (deaths from Covid-19) can be applied. 
+We first explain the crosswalk and then present an example of how the crosswalk of HRR variates (hospital quality) and County-level outcomes (deaths from COVID-19) can be applied. 
 
 
 ## Crosswalk
@@ -27,7 +27,7 @@ We refer to this approach as “zip-weighted”.
 
 The crosswalk contains other weighting methods, in our case, as robustness checks. First, we calculate quality exposure as the average of all HRRs a county has referral ties to without weighing by how many zip codes in a county belong to an HRR. We refer to this as an “equally-weighted” quality exposure. Second, the crosswalk file also contains an approach zip-code population-weighted weights (using census population estimates). 
 
-Finally, [Dartmouth-DAC](https://github.com/Dartmouth-DAC/covid-19-hrr-mapping), provides a complementary crosswalk that is similar in many respects but results in more missing values. In our application, either crosswalk produces similar results, which is however not guaranteed. 
+Finally, [Dartmouth-DAC](https://github.com/Dartmouth-DAC/covid-19-hrr-mapping) provides a complementary crosswalk that is similar in many respects but results in more missing values. In our application, either crosswalk produces similar results, but this is not guaranteed. 
 
 
 ## Example
@@ -36,11 +36,11 @@ Finally, [Dartmouth-DAC](https://github.com/Dartmouth-DAC/covid-19-hrr-mapping),
 
 The figure shows the application of the weighting for North Carolina. 
 
-NC has access to nine HRRs (Asheville, Charlotte, Durham, Greensboro, Greenville, Hickory, Raleigh, Wilmington, and Winston-Salem); thus each county might have ties to several hospital referral regions. In the left Figure, we show the raw weighting, and in the right conditional on county-level characteristics (residualized) from our application. 
+NC has access to nine HRRs (Asheville, Charlotte, Durham, Greensboro, Greenville, Hickory, Raleigh, Wilmington, and Winston-Salem); thus, each county might have ties to several hospital referral regions. In the left Figure, we show the raw weighting, and in the right, conditional on county-level characteristics (residualized) from our application. 
 
 <img src="./_example/exampleNC.png" height="300">
 
-#### Country wide quality differences 
+#### Country-wide quality differences 
 
 Across the whole country, the quality looks like this: 
 
@@ -71,15 +71,18 @@ collapse (mean) AHAbeds [aw=zip_count_weight_in_HRR] , by(countyfips)
 
 ## Replication do-files 
 
-Here we collect all dofiles and data used in our analysis. We do not repost the full dataset as these were too large for the Github repository, please contact us if you have issues replicating it. 
+Here, we collect all files and data used in our analysis. We did not repost the full dataset as it was too large for the GitHub repository. Please contact us if you have issues replicating it. 
 
 ## Source files  
 
-We do not re-post the publicly available datasets from the various sources here since they belong to different entities, however, we present all sources and do-files extracting and preparing the data. 
+We do not re-post the publicly available datasets from the various sources here since they belong to different entities; however, we present all sources and do-files for extracting and preparing the data. 
 
-If you are interested in the exact datasets (in case there are updates or they are not available anymore, please contact us directly). 
+If you are interested in the exact datasets (or if there are updates or they are no longer available), please contact us directly. 
 
 The source file folder contains an overview of the files we used. 
+
+The quality metrics are constructed in [Kunz et al (2024)](https://onlinelibrary.wiley.com/doi/10.1002/hec.4861) and associated replication files can be found (here)[].
+
 
 ## Update History
 * **October 22, 2022**
@@ -98,7 +101,7 @@ The source file folder contains an overview of the files we used.
 
 Kunz, J. S., K. E. Staub, & R. Winkelmann. 2021. [Predicting Individual Effects in Fixed Effects Panel Probit Models](http://doi.org/10.1111/rssa.12722). Journal of the Royal Statistical Society: Series A. 184(3): 1109-1145.
 
-Kunz, J. S., C. Propper, K. E. Staub, & R. Winkelmann. 2021. [Assessing the Quality of Public Services: Does Hospital Competition Crowd-out the For-profit Quality Gap? ](https://drive.google.com/file/d/1bY_LMfkLYLaTaCQ4UF1-rYwAAOFA-Mpr/view). Working Paper
+Kunz, J. S., Propper, C., Staub, K. E. & Winkelmann, R. 2024. [Assessing the quality of public services: For-profits, chains, and concentration in the hospital market](https://onlinelibrary.wiley.com/doi/10.1002/hec.4861) Health Economics. In press.
 
 Kunz, J. .S & C. Propper. 2022. [JUE Insight: Is Hospital Quality Predictive of Pandemic Deaths? Evidence from US Counties](https://www.sciencedirect.com/science/article/pii/S0094119022000493). Journal of Urban Economics. Forthcoming 
 
